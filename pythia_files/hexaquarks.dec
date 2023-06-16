@@ -1,0 +1,27 @@
+# Define the aliased particles and their charge conjugates.
+Alias test_D*- D*-
+Alias test_D*+ D*+
+Alias test_D- D-
+Alias test_D+ D+
+ChargeConj test_D*- test_D*+
+ChargeConj test_D- test_D+
+
+# Modify the decay of the B0.
+Decay B0
+      1.0  test_D*- e+ nu_e HQET 0.77 1.33 0.92;
+Enddecay
+CDecay anti-B0
+
+# Modify the decay of the D*- (for the B0).
+Decay test_D*-
+      1.0  test_D- gamma VSP_PWAVE;
+Enddecay
+CDecay test_D*+
+
+# Modify the decay of the D- (for the B0).
+Decay test_D-
+      1.0 pi0 e- anti-nu_e ISGW2;
+Enddecay
+CDecay test_D+
+
+End
