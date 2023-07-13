@@ -1,3 +1,7 @@
+
+data/*
+hepmc2root/hepmc2root
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
