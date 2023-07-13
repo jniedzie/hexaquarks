@@ -35,11 +35,23 @@ TTree* get_input_tree(string input_path)
 void fill_and_save_histograms(const vector<Event*> &events, string output_path)
 {
   auto histogramFiller = HistogramFiller();
-
+  int i_event=0;
   for(auto event : events){
     for(auto particle : event->particles){
+      if(particle->is_photon()) continue;
+      if(particle->is_neutrino()) continue;
+      if(particle->is_electron()) continue;
+      if(particle->is_gluon()) continue;
+      if(particle->is_quark()) continue;
+      
+      // if(particle->has_daughters()) continue;
+
+      if(i_event == 0) particle->print();
+
       histogramFiller.fill_hists(particle);
     }
+
+    i_event++;
   }
 
   histogramFiller.save_histograms(output_path);

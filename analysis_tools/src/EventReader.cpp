@@ -63,13 +63,6 @@ std::vector<Event*> EventReader::read_events(TTree *tree)
   
   tree->SetBranchAddress("Particle_status", &particle_status);
   
-//  int particle_index[99999];
-  //    for(auto branch : *input_tree->GetListOfBranches()){
-  //        if(branch->GetName() == "Particle_index"){
-  //            input_tree->SetBranchAddress("Particle_index", particle_index);
-  //        }
-  //    }
-  
   vector<Event*> events;
   
   for(int i_event = 0; i_event < tree->GetEntries(); i_event++){

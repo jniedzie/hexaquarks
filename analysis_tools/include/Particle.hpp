@@ -14,20 +14,26 @@ class Particle
 public:
   Particle(float _x, float _y, float _z, float _px, float _py, float _pz, float _energy, float _mass, float _ctau,
            int _pdgid, std::vector<int> _daughters, int _status, int _index, int _barcode);
-  Particle(TVector3 boost, Particle* particle);
+  
   ~Particle(){}
   
   void print();
   
+  bool is_gluon(){return pdgid==21;}
+  bool is_electron(){return abs(pdgid)==11;}
   bool is_muon(){return abs(pdgid)==13;}
-  bool is_good_non_top_muon(const std::vector<Particle*> &particles, bool include_lxy_selection=false);
-  bool is_motherless();
-  
+  bool is_photon(){return pdgid==22;}
+  bool is_pion() const;
+  bool is_kaon() const;
+  bool is_neutrino();
+  bool is_quark();
+
   bool has_top_ancestor(const std::vector<Particle*> &other_particles);
-  bool has_alp_ancestor(const std::vector<Particle*> &other_particles);
-  bool is_final();
-  bool is_prompt();
   
+  bool is_final();
+  
+  bool has_daughters();
+
   double eta();
   double momentum() const;
   double pt() const;

@@ -20,32 +20,24 @@ HistogramSet::HistogramSet(string prefix)
   hists["phi"]      = new TH1D((prefix+"_phi").c_str(),       (prefix+"_phi").c_str(),          1000, -5,     5     );
 }
 
-void HistogramSet::fill(const Particle *particle, const Event *event)
+void HistogramSet::fill(const Particle *particle)
 {
-  double weight = 1;
-  if(event) weight = event->weight;
-
-  hists["pt"]->Fill(particle->four_vector.Pt(), weight);
-  hists["mass"]->Fill(particle->four_vector.M(), weight);
-  hists["mass_log"]->Fill(particle->four_vector.M(), weight);
-  hists["eta"]->Fill(particle->four_vector.Eta(), weight);
-  hists["phi"]->Fill(particle->four_vector.Phi(), weight);
+  hists["pt"]->Fill(particle->four_vector.Pt());
+  hists["mass"]->Fill(particle->four_vector.M());
+  hists["mass_log"]->Fill(particle->four_vector.M());
+  hists["eta"]->Fill(particle->four_vector.Eta());
+  hists["phi"]->Fill(particle->four_vector.Phi());
 }
 
-
-void HistogramSet::fill(const Particle* particle_1, const Particle* particle_2, const Event *event)
-{
-  double weight = 1;
-  if(event) weight = event->weight;
-      
+void HistogramSet::fill(const Particle* particle_1, const Particle* particle_2)
+{    
   TLorentzVector diparticle = particle_1->four_vector + particle_2->four_vector;
-  hists["pt"]->Fill(diparticle.Pt(), weight);
-  hists["mass"]->Fill(diparticle.M(), weight);
-  hists["mass_log"]->Fill(diparticle.M(), weight);
-  hists["eta"]->Fill(diparticle.Eta(), weight);
-  hists["phi"]->Fill(diparticle.Phi(), weight);
+  hists["pt"]->Fill(diparticle.Pt());
+  hists["mass"]->Fill(diparticle.M());
+  hists["mass_log"]->Fill(diparticle.M());
+  hists["eta"]->Fill(diparticle.Eta());
+  hists["phi"]->Fill(diparticle.Phi());
 }
-
 
 float* HistogramSet::logxBins(const int n_bins, const float min, const float max)
 {

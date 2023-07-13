@@ -18,10 +18,7 @@ HistogramFiller::HistogramFiller()
     "single_kaons",
   };
 
-  for(string particle : particle_names){
-      histSets[particle] = new HistogramSet(particle);
-  }
-  
+  for(string particle : particle_names) histSets[particle] = new HistogramSet(particle);
 }
 
 HistogramFiller::~HistogramFiller()
@@ -35,6 +32,9 @@ void HistogramFiller::fill_hists(const Particle* particle)
 {
   if(!particle) return;
   histSets["single_particles"]->fill(particle);
+
+  if(particle->is_pion()) histSets["single_pions"]->fill(particle);
+  if(particle->is_kaon()) histSets["single_kaons"]->fill(particle);
 }
 
 void HistogramFiller::save_histograms(std::string output_path)

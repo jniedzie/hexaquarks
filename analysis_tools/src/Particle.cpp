@@ -21,24 +21,6 @@ pdgid(_pdgid), daughters(_daughters), status(_status), index(_index), barcode(_b
   four_vector.SetPxPyPzE(px, py, pz, energy);
 }
 
-Particle::Particle(TVector3 boost, Particle* particle):
-ctau(particle->ctau), pdgid(particle->pdgid), daughters(particle->daughters), 
-status(particle->status), index(particle->index), barcode(particle->barcode)
-{
-  TLorentzRotation rotation(boost);
-  rotation.Invert();
-  TLorentzVector transformed_four_vector = rotation * four_vector;
-
-  x = transformed_four_vector.X();
-  y = transformed_four_vector.Y();
-  z = transformed_four_vector.Z();
-  px = transformed_four_vector.Px(); 
-  py = transformed_four_vector.Py();
-  pz = transformed_four_vector.Pz();
-  energy = transformed_four_vector.E();
-  mass = transformed_four_vector.M();
-}
-
 void Particle::print()
 {
   cout<<"Particle "<<index<<" (pdg: "<<pdgid<<", status: "<<status<<"), daughters: ";
@@ -48,27 +30,33 @@ void Particle::print()
   cout<<"\tbar: "<<barcode<<endl;
 }
 
-bool Particle::is_good_non_top_muon(const vector<Particle*> &particles, bool include_lxy_selection)
+bool Particle::is_neutrino()
 {
-  if(!is_final()) return false;
-  if(abs(pdgid) != 13) return false;
-  if(fabs(eta()) > 2.5) return false;
-  if(pt() < 5) return false;
-  if(has_top_ancestor(particles)) return false;
-  if(pow(energy, 2) - pow(momentum(), 2) < 0) return false;
-  if(include_lxy_selection) {if(is_prompt()) return false;}
-  
-  return true;
+  if(abs(pdgid) == 12) return true;
+  if(abs(pdgid) == 14) return true;
+  if(abs(pdgid) == 16) return true;
+  return false;
 }
 
-bool Particle::is_motherless()
+bool Particle::is_pion() const
 {
-  if(mothers.size() == 0) return true;
-  
-  for(int mother_index : mothers){
-    if(mother_index < 0) return true;
-  }
-  
+  if(abs(pdgid)==111) return true;
+  if(abs(pdgid)==211) return true;
+  return false;
+}
+
+bool Particle::is_kaon() const
+{
+  if(abs(pdgid)==130) return true;
+  if(abs(pdgid)==310) return true;
+  if(abs(pdgid)==311) return true;
+  if(abs(pdgid)==321) return true;
+  return false;
+}
+
+bool Particle::is_quark()
+{
+  if(abs(pdgid) >= 1 && abs(pdgid) <= 8) return true;
   return false;
 }
 
@@ -77,23 +65,9 @@ bool Particle::has_top_ancestor(const vector<Particle*> &other_particles)
   if(abs(pdgid) == 6 && status >= 60) return true;
   if(mothers.size()==0) return false;
   
-  for(int mother_index : mothers){
-//    if(mother_index<0) continue;
-    
+  for(int mother_index : mothers){    
     auto mother = other_particles.at(mother_index);
     if(mother->has_top_ancestor(other_particles)) return true;
-  }
-  return false;
-}
-
-bool Particle::has_alp_ancestor(const vector<Particle*> &other_particles)
-{
-  if(abs(pdgid) == 9000005) return true;
-  if(mothers.size()==0) return false;
-  
-  for(int mother_index : mothers){
-    auto mother = other_particles.at(mother_index);
-    if(mother->has_alp_ancestor(other_particles)) return true;
   }
   return false;
 }
@@ -106,9 +80,12 @@ bool Particle::is_final()
   return true;
 }
 
-bool Particle::is_prompt()
+bool Particle::has_daughters()
 {
-  return sqrt(x*x + y*y) <= 0.2;
+  for(auto daughter : daughters){
+    if(daughter != -1) return true;  
+  }
+  return false;
 }
 
 double Particle::eta()
