@@ -2,6 +2,13 @@
 data/*
 hepmc2root/hepmc2root
 
+analysis_tools/CMakeFiles/*
+analysis_tools/CMakeCache.txt
+analysis_tools/Makefile
+analysis_tools/cmake_install.cmake
+analysis_tools/libAnalysis.a
+analysis_tools/prepare_histograms
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
