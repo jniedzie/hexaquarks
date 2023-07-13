@@ -19,18 +19,15 @@
 
 class HistogramSet {
 public:
-  HistogramSet(std::string prefix, bool reduce_hists=false);
+  HistogramSet(std::string prefix);
   
   void fill(const Particle* particle, const Event* event=nullptr);
   void fill(const Particle* particle_1, const Particle* particle_2, const Event* event=nullptr);
-  void fill_2d(const Particle* particle_1, const Particle* particle_2, const Particle* particle_3=nullptr, const Event* event=nullptr);
   
   std::map<std::string, TH1D*> hists;
-  std::map<std::string, TH2D*> hists2d;
 
   float* logxBins(const int n_bins, const float min, const float max);
-private:
-  bool reduceHists=false;
+
 };
 
 #endif /* HistogramSet_hpp */

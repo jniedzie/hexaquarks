@@ -20,7 +20,6 @@ void Event::print_all_particles()
 void Event::setup()
 {
   setup_particle_mothers();
-//  setup_motherless_particles();
 }
 
 void Event::setup_particle_mothers()
@@ -32,21 +31,6 @@ void Event::setup_particle_mothers()
         else particles.at(daughter_index)->is_selfmother = true;
       }
     }
-  }
-}
-
-void Event::setup_motherless_particles()
-{
-  for(auto particle : particles){
-    if(particle->mothers.size() !=0 ) continue; // skip if has mother(s)
-    if(particle->is_selfmother) continue; // skip if it is its own mother (e.g. p -> p g)
-    if(particle->pdgid == 21) continue; // skip gluons, which do crazy stuff we don't care about
-    if(particle->status == 71) continue; // skip "copied partons to collect into contiguous colour singlet"
-    
-//    cout<<"\n\nWARNING -- encountered a motherless particle. This may happen when HEPMC event had a vertex "<<endl;
-//    cout<<"with more particles attached to it than we were willing to store.\n\n"<<endl;
-//    particle->print();
-    particle->mothers.push_back(-1);
   }
 }
 
