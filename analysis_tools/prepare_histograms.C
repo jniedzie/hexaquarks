@@ -48,7 +48,19 @@ void fill_and_save_histograms(const vector<Event*> &events, string output_path)
 
       if(i_event == 0) particle->print();
 
+      // single particles
       histogramFiller.fill_hists(particle);
+      // double particles
+      for(auto particle2 : event->particles){
+        if(particle2->is_photon()) continue;
+        if(particle2->is_neutrino()) continue;
+        if(particle2->is_electron()) continue;
+        if(particle2->is_gluon()) continue;
+        if(particle2->is_quark()) continue;
+        if(particle == particle2) continue;
+
+        histogramFiller.fill_hists(particle, particle2);
+      }
     }
 
     i_event++;

@@ -62,4 +62,13 @@ inline std::string to_nice_string(double a_value, int precision = 1)
   return result;
 }
 
+// check if an array contains any of the elements in another array
+template <typename T, typename U>
+bool contains(T&& arr, U elem){
+  for(auto it = std::begin(arr); it != std::end(arr); ++it){
+    if(*it == elem) return true;
+  }
+  return false;
+}
+
 #endif /* Helpers_h */

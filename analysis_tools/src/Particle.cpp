@@ -7,13 +7,15 @@
 #include <TLorentzRotation.h>
 
 #include "Particle.hpp"
+#include "Event.hpp"
+#include "Helpers.hpp"
 
 using namespace std;
 
 Particle::Particle(float _x, float _y, float _z, float _px, float _py, float _pz, float _energy, float _mass, float _ctau,
-                   int _pdgid, vector<int> _daughters, int _status, int _index, int _barcode):
+                   int _pdgid, vector<int> _daughters, int _status, int _index, int _barcode, Event* _event):
 x(_x), y(_y), z(_z), px(_px), py(_py), pz(_pz), energy(_energy), mass(_mass), ctau(_ctau),
-pdgid(_pdgid), daughters(_daughters), status(_status), index(_index), barcode(_barcode)
+pdgid(_pdgid), daughters(_daughters), status(_status), index(_index), barcode(_barcode), event(_event)
 {
   is_selfmother = false;
   
@@ -72,15 +74,26 @@ bool Particle::has_top_ancestor(const vector<Particle*> &other_particles)
   return false;
 }
 
-bool Particle::is_final()
+bool Particle::is_final() const
 {
   if(abs(pdgid) == 6) return status == 62;
   if(abs(pdgid) == 13) return status == 1;
+  // charged pion is final if it has 0 daughters or a mu daughter
+
+  if(abs(pdgid) == 211){
+    //vector<int> daughters_id;
+    //for(auto daughter_index : daughters){
+    //  if(daughter_index > 0) daughters_id.push_back(event->particles.at(daughter_index)->pdgid);
+    //}
+
+    //return !has_daughters() || contains(daughters_id, 13) || contains(daughters_id, -13);
+    return status == 1;
+  }
   
   return true;
 }
 
-bool Particle::has_daughters()
+bool Particle::has_daughters() const
 {
   for(auto daughter : daughters){
     if(daughter != -1) return true;  

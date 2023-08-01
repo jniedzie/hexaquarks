@@ -21,6 +21,7 @@ public:
   ~HistogramFiller();
   
   void fill_hists(const Particle* particle);
+  void fill_hists(const Particle* particle, const Particle* particle2);
   
   void save_histograms(std::string output_path);
   std::map<std::string, HistogramSet*> histSets;
