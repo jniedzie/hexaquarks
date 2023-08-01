@@ -87,7 +87,7 @@ std::vector<Event*> EventReader::read_events(TTree *tree)
                                    particle_energy[i_particle], particle_mass[i_particle], particle_ctau[i_particle],
                                    particle_pid[i_particle],
                                    daughters,
-                                   particle_status[i_particle], i_particle, particle_barcode[i_particle]);
+                                   particle_status[i_particle], i_particle, particle_barcode[i_particle], event);
       
       event->add_particle(particle);
     }

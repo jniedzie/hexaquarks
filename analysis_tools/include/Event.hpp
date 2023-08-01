@@ -12,6 +12,8 @@
 
 #include "Particle.hpp"
 
+class Particle;
+
 class Event
 {
 public:

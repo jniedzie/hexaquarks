@@ -8,12 +8,15 @@
 #include <vector>
 
 #include <TLorentzVector.h>
+#include "Event.hpp"
+
+class Event;
 
 class Particle
 {
 public:
   Particle(float _x, float _y, float _z, float _px, float _py, float _pz, float _energy, float _mass, float _ctau,
-           int _pdgid, std::vector<int> _daughters, int _status, int _index, int _barcode);
+           int _pdgid, std::vector<int> _daughters, int _status, int _index, int _barcode, Event* _event);
   
   ~Particle(){}
   
@@ -30,9 +33,9 @@ public:
 
   bool has_top_ancestor(const std::vector<Particle*> &other_particles);
   
-  bool is_final();
+  bool is_final() const;
   
-  bool has_daughters();
+  bool has_daughters() const;
 
   double eta();
   double momentum() const;
@@ -45,6 +48,8 @@ public:
   bool is_selfmother;
   
   TLorentzVector four_vector;
+
+  Event* event;
 };
 
 
