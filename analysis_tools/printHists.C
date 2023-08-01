@@ -5,7 +5,7 @@ void printHists()
     gROOT->SetBatch();
     TFile* file = new TFile("histograms.root", "read");
 
-    TCanvas* c = new TCanvas("", "", 800, 800);
+    TCanvas* c = new TCanvas("", "", 1200, 1200);
 
     for (TObject* keyAsObj : *file->GetListOfKeys())
     {
