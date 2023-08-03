@@ -46,7 +46,7 @@ void fill_and_save_histograms(const vector<Event*> &events, string output_path)
       
       // if(particle->has_daughters()) continue;
 
-      if(i_event == 0) particle->print();
+      //if(i_event == 0) particle->print();
 
       // single particles
       histogramFiller.fill_hists(particle);

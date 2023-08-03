@@ -13,11 +13,11 @@ using namespace std;
 
 HistogramSet::HistogramSet(string prefix)
 {
-  hists["pt"]       = new TH1D((prefix+"_pt").c_str(),        (prefix+"_pt").c_str(),           100, 0,      5   );
-  hists["mass_log"] = new TH1D((prefix+"_mass_log").c_str(),  (prefix+"_mass_log").c_str(),     1000,  logxBins(1000,0.1,100));
-  hists["mass"]     = new TH1D((prefix+"_mass").c_str(),      (prefix+"_mass").c_str(),         1500,  0,     2   );
-  hists["eta"]      = new TH1D((prefix+"_eta").c_str(),       (prefix+"_eta").c_str(),          1000, -5,     5     );
-  hists["phi"]      = new TH1D((prefix+"_phi").c_str(),       (prefix+"_phi").c_str(),          1000, -5,     5     );
+  hists["pt"]       = new TH1D((prefix+"_pt").c_str(),        (prefix+"_pt;p_{T} [GeV]; # events").c_str(),           100, 0,      5   );
+  hists["mass_log"] = new TH1D((prefix+"_mass_log").c_str(),  (prefix+"_mass_log; log10(m/1GeV); # events").c_str(),     1000,  logxBins(1000,0.1,100));
+  hists["mass"]     = new TH1D((prefix+"_mass").c_str(),      (prefix+"_mass; m [GeV]; # events").c_str(),         1500,  0,     2   );
+  hists["eta"]      = new TH1D((prefix+"_eta").c_str(),       (prefix+"_eta; #eta; # events").c_str(),          1000, -5,     5     );
+  hists["phi"]      = new TH1D((prefix+"_phi").c_str(),       (prefix+"_phi; #phi; # events").c_str(),          1000, -5,     5     );
 }
 
 void HistogramSet::fill(const Particle *particle)
