@@ -37,6 +37,8 @@ public:
   
   bool has_daughters() const;
 
+  bool has_mother_with_id(int id) const;
+
   double eta();
   double momentum() const;
   double pt() const;

@@ -78,17 +78,7 @@ bool Particle::is_final() const
 {
   if(abs(pdgid) == 6) return status == 62;
   if(abs(pdgid) == 13) return status == 1;
-  // charged pion is final if it has 0 daughters or a mu daughter
-
-  if(abs(pdgid) == 211){
-    //vector<int> daughters_id;
-    //for(auto daughter_index : daughters){
-    //  if(daughter_index > 0) daughters_id.push_back(event->particles.at(daughter_index)->pdgid);
-    //}
-
-    //return !has_daughters() || contains(daughters_id, 13) || contains(daughters_id, -13);
-    return status == 1;
-  }
+  if(abs(pdgid) == 211) return status == 1;
   
   return true;
 }
@@ -100,6 +90,13 @@ bool Particle::has_daughters() const
   }
   return false;
 }
+
+bool Particle::has_mother_with_id(int id) const{
+  vector<int> mothers_id;
+  for(auto mother : mothers) if(mother > 0) mothers_id.push_back(event->particles.at(mother)->pdgid);
+  return contains(mothers_id, id);
+}
+
 
 double Particle::eta()
 {
