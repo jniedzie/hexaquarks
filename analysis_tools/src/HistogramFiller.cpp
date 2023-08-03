@@ -43,14 +43,16 @@ void HistogramFiller::fill_hists(const Particle* particle1, const Particle* part
 {
   if(!particle1 || !particle2) return;
   // pi+ and pi-
-  if(particle1->is_pion() && particle2->is_pion() && particle1->pdgid == -1*particle2->pdgid && particle1->is_final() && particle2->is_final()){
-    histSets["double_pions"]->fill(particle1, particle2);
-  }
-
-  if(particle1->is_pion() && particle2->is_pion() && particle1->pdgid == -1*particle2->pdgid && particle1->is_final() && particle2->is_final() &&
-     particle1->has_mother_with_id(113) && particle2->has_mother_with_id(113)){
-    histSets["double_pions_from_rho_decay"]->fill(particle1, particle2);
-  }
+if(particle1->is_pion() && particle2->is_pion() && 
+   particle1->pdgid == -1*particle2->pdgid && 
+   particle1->is_final() && particle2->is_final())
+{
+     histSets["double_pions"]->fill(particle1, particle2);
+     
+     if(particle1->has_mother_with_id(113) && particle2->has_mother_with_id(113)){
+          histSets["double_pions_from_rho_decay"]->fill(particle1, particle2);
+     }
+}
 }
 
 void HistogramFiller::save_histograms(std::string output_path)
