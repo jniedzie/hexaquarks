@@ -19,7 +19,7 @@ void printHists()
         TKey* key = (TKey*)keyAsObj;
         TH1D* h = (TH1D*)file->Get(key->GetName());
 
-        h->GetYaxis()->SetTitleOffset(0.2);
+        h->GetYaxis()->SetTitleOffset(2.);
 
         c->Clear();
         h->Draw();

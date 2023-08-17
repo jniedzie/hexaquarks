@@ -17,7 +17,8 @@ HistogramFiller::HistogramFiller()
     "single_pions",
     "single_kaons",
     "double_pions",
-    "double_pions_from_rho_decay"
+    "double_pions_from_rho_decay",
+    "triple_meson"
   };
 
   for(string particle : particle_names) histSets[particle] = new HistogramSet(particle);
@@ -54,6 +55,19 @@ if(particle1->is_pion() && particle2->is_pion() &&
      }
 }
 }
+
+void HistogramFiller::fill_hists(const Particle* particle1, const Particle* particle2, const Particle* particle3)
+{
+    if(!particle1 || !particle2 || !particle3) return;
+    int meson_ids[] = {311, 321, 111, 211};
+    if( particle1->has_mother_with_id(511) && particle2->has_mother_with_id(511) && particle3->has_mother_with_id(511) &&
+    contains(meson_ids, abs(particle1->pdgid)) && contains(meson_ids, abs(particle2->pdgid)) && contains(meson_ids, abs(particle3->pdgid)) )
+    {
+      histSets["triple_meson"]->fill(particle1, particle2, particle3);
+    }
+
+}
+
 
 void HistogramFiller::save_histograms(std::string output_path)
 {

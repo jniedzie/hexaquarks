@@ -1,8 +1,19 @@
 #include "Pythia8/Pythia.h"
-#include "Pythia8Plugins/EvtGen.h"
 #include "Pythia8Plugins/HepMC2.h"
+#include <cstdlib>
 
 using namespace Pythia8;
+
+
+// check if an array contains any of the elements in another array
+template <typename T, typename U>
+bool contains(T&& arr, U elem){
+  for(auto it = std::begin(arr); it != std::end(arr); ++it){
+    if(*it == elem) return true;
+  }
+  return false;
+}
+
 
 bool are_args_ok(int argc){
   if (argc == 6) return true;
@@ -33,17 +44,33 @@ int main(int argc, char* argv[]) {
   
   // Prepare Pythia generator
   Pythia pythia;
+  // beams
+  pythia.readString("Beams:idA =  2212");
+  pythia.readString("Beams:idB = 2212");
+  pythia.readString("Beams:eCM = 14000.");
+
+
   pythia.readFile(argv[1]);
   pythia.readString("Print:quiet = on");
   pythia.readString("HardQCD:hardbbbar = on");
   int nEvent = pythia.mode("Main:numberOfEvents");
   int nAbort = pythia.mode("Main:timesAllowErrors");
+
+  // Run configuration. Charmonium processes favour production of the
+  // relevant exotic hadrons.
+  //pythia.readString("Charmonium:all = on");
+
+  // Enable rescattering. Retune pT0Ref to get correct charged multiplicity.
+  pythia.readString("HadronLevel:rescatter = on");
+  pythia.readString("MultipartonInteractions:pT0Ref = 2.345");
+  pythia.particleData.checkTable();
+
   pythia.init();
 
   // Prepare EvtGen decayer
-  EvtGenDecays *evtgen = 0;
+  // EvtGenDecays *evtgen = 0;
   setenv("PYTHIA8DATA", argv[5], 1);
-  evtgen = new EvtGenDecays(&pythia, argv[3], argv[4]);
+  // evtgen = new EvtGenDecays(&pythia, argv[3], argv[4]);
   
   Pythia8ToHepMC toHepMC(argv[2]);
 
@@ -52,10 +79,14 @@ int main(int argc, char* argv[]) {
 
   cout<<"Will generate "<<nEvent<<" events"<<endl;
 
-  for (int iEvent = 0; iEvent < nEvent; ++iEvent) {
-    cout<<"Event "<<iEvent<<endl;
+  int hexaquarks_ids[] = {511, -511};
+
+  int iEvent = 0, hexa_count = 0;
+  while(iEvent < nEvent) {
+    iEvent++;
+    if(iEvent%100 == 0)cout<<"Event "<<iEvent<<endl;
     if (!pythia.next()) {
-      cout<<"There was some failure"<<endl;
+     cout<<"There was some failure"<<endl;
       // If failure because reached end of file then exit event loop.
       if (pythia.info.atEndOfFile()) {
         cout << " Aborted since reached end of Les Houches Event File\n";
@@ -66,22 +97,33 @@ int main(int argc, char* argv[]) {
       if (++iAbort < nAbort) continue;
       
       cout << " Event generation aborted prematurely, owing to error!\n";
-      break;
+      continue;
     }
 
     // Perform the decays with EvtGen.
-    cout<<"Decaying with EvtGen"<<endl;
-    if (evtgen) evtgen->decay();
-    cout<<"Saving to HepMC"<<endl;
+    // cout<<"Decaying with EvtGen"<<endl;
+    // if (evtgen) evtgen->decay();
+    bool is_hexaquark = false;
+    for(int i = 1; i < pythia.event.size(); i++)
+    {
+      if(contains(hexaquarks_ids, abs(pythia.event[i].id()))){
+        is_hexaquark = true;
+        hexa_count++;
+        break;
+      }
+    }
+    if(is_hexaquark == false) continue;
+
+    if(iEvent%100 == 0) cout<<"Saving to HepMC"<<endl;
     try{ toHepMC.writeNextEvent(pythia); }
     catch(std::out_of_range&){ cout<<"vector out of range"<<endl; }
-    cout<<"Event finished"<<endl;
+    if(iEvent%100 == 0) cout<<"Event finished"<<endl;
   }
   
 
   cout<<"Events loop finished"<<endl;
   pythia.stat();
 
-  if (evtgen) delete evtgen;
+  // if (evtgen) delete evtgen;
   return 0;
 }
