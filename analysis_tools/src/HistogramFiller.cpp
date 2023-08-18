@@ -18,7 +18,8 @@ HistogramFiller::HistogramFiller()
     "single_kaons",
     "double_pions",
     "double_pions_from_rho_decay",
-    "triple_meson"
+    "triple_meson",
+    "leading_muons"
   };
 
   for(string particle : particle_names) histSets[particle] = new HistogramSet(particle);
@@ -38,6 +39,7 @@ void HistogramFiller::fill_hists(const Particle* particle)
 
   if(particle->is_pion()) histSets["single_pions"]->fill(particle);
   if(particle->is_kaon()) histSets["single_kaons"]->fill(particle);
+  if(particle->index == particle->event->leading_muon_index) histSets["leading_muons"]->fill(particle);
 }
 
 void HistogramFiller::fill_hists(const Particle* particle1, const Particle* particle2)

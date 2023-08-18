@@ -8,7 +8,7 @@
 void printHists()
 {
     gROOT->SetBatch();
-    TFile* file = new TFile("histograms.root", "read");
+    TFile* file = new TFile("histograms_lclc.root", "read");
 
     TCanvas* c = new TCanvas("", "", 1200, 1200);
 
@@ -23,7 +23,7 @@ void printHists()
 
         c->Clear();
         h->Draw();
-        c->SaveAs(("images/" + (string)key->GetName() + ".png").c_str());
+        c->SaveAs(("images_lclc/" + (string)key->GetName() + ".png").c_str());
     }
 
 }

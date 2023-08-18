@@ -28,11 +28,15 @@ public:
   int get_n_muons();
   
   std::vector<Particle*> particles;
+
+  int leading_muon_index;
   
 private:
   void setup_particle_mothers();
   
   std::vector<int> get_sisters_indices(Particle *mother, int i_particle);
+
+  int get_leading_muon_index();
 };
 
 #endif /* Event_hpp */

@@ -97,6 +97,7 @@ else
 endif
 
 hexaquarks_pythia_program: $(PYTHIA) $$@.cc
+	cp ~/hexaquarks/pythia_files/* .
 ifeq ($(EVTGEN_USE)$(HEPMC3_USE),truetrue)
 	$(CXX) $@.cc -o $@ $(CXX_COMMON) $(HEPMC3_INCLUDE) $(HEPMC3_LIB) $(EVTGEN_INCLUDE)\
 	 -DHEPMC3 -DEVTGEN_PYTHIA -DEVTGEN_EXTERNAL $(EVTGEN_LIB)

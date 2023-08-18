@@ -112,7 +112,7 @@ int main(int argc, char* argv[]) {
         break;
       }
     }
-    if(is_hexaquark == false) continue;
+    // if(is_hexaquark == false) continue;
 
     if(iEvent%100 == 0) cout<<"Saving to HepMC"<<endl;
     try{ toHepMC.writeNextEvent(pythia); }
