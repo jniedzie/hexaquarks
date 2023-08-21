@@ -174,5 +174,5 @@ cython_debug/
 #.idea/
 
 .vscode
-
-analysis_tools/*.root
+*.root
+*.png
