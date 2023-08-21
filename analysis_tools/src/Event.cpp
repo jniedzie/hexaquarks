@@ -74,3 +74,25 @@ int Event::get_leading_muon_index()
 
   return index;
 }
+
+int Event::get_leading_jet_index()
+{
+  int index = -1;
+  // find first muon
+  for(auto particle : particles)
+  {
+    if(abs(particle->pdgid) == 99)
+    {
+      index = particle->index;
+      break;
+    }
+  }
+
+  for(auto particle : particles)
+  {
+    if(abs(particle->pdgid) != 99) continue;
+    if(particle->four_vector.Pt() > particles[index]->four_vector.Pt()) index = particle->index;
+  }
+
+  return index;
+}

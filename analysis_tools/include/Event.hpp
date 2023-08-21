@@ -30,6 +30,7 @@ public:
   std::vector<Particle*> particles;
 
   int leading_muon_index;
+  int leading_jet_index;
   
 private:
   void setup_particle_mothers();
@@ -37,6 +38,7 @@ private:
   std::vector<int> get_sisters_indices(Particle *mother, int i_particle);
 
   int get_leading_muon_index();
+  int get_leading_jet_index();
 };
 
 #endif /* Event_hpp */

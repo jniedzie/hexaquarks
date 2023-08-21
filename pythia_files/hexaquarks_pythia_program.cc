@@ -63,9 +63,11 @@ int main(int argc, char* argv[]) {
   // Enable rescattering. Retune pT0Ref to get correct charged multiplicity.
   pythia.readString("HadronLevel:rescatter = on");
   pythia.readString("MultipartonInteractions:pT0Ref = 2.345");
-  pythia.particleData.checkTable();
-
+  //pythia.particleData.checkTable();
+  //pythia.particleData.listAll();
   pythia.init();
+
+  SlowJet slowjet(-1, 0.7);
 
   // Prepare EvtGen decayer
   // EvtGenDecays *evtgen = 0;
@@ -97,8 +99,9 @@ int main(int argc, char* argv[]) {
       if (++iAbort < nAbort) continue;
       
       cout << " Event generation aborted prematurely, owing to error!\n";
-      continue;
+      break;
     }
+
 
     // Perform the decays with EvtGen.
     // cout<<"Decaying with EvtGen"<<endl;
@@ -112,7 +115,14 @@ int main(int argc, char* argv[]) {
         break;
       }
     }
-    // if(is_hexaquark == false) continue;
+     //if(is_hexaquark == false) continue;
+
+    // find jets
+    slowjet.analyze(pythia.event);
+    for(int i = 0; i < slowjet.sizeJet(); i++)
+    {
+      pythia.event.append(99, 1, 0, 0, slowjet.p(i), slowjet.m(i));
+    }
 
     if(iEvent%100 == 0) cout<<"Saving to HepMC"<<endl;
     try{ toHepMC.writeNextEvent(pythia); }
