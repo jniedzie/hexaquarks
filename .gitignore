@@ -9,6 +9,8 @@ analysis_tools/Makefile
 analysis_tools/cmake_install.cmake
 analysis_tools/libAnalysis.a
 analysis_tools/prepare_histograms
+analysis_tools/printHists
+analysis_tools/printHists_other
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

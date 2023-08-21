@@ -1,7 +1,7 @@
 ParticleDecays:limitTau0 = off
 ResonanceWidths:minWidth = 1e-30
 
-Main:numberOfEvents = 1000
+Main:numberOfEvents = 70000
 !Main:maxAbsEta = dummy_value
 !Main:minPhi = dummy_value
 !Main:maxPhi = dummy_value

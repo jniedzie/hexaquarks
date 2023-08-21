@@ -5,10 +5,11 @@
 #include "TKey.h"
 #include "THStack.h"
 #include "TLegend.h"
+#include "TROOT.h"
 
+using namespace std;
 
-void printHists_special()
-{
+int main() {
     gROOT->SetBatch();
     TFile* file = new TFile("histograms_lclc_jpsi2mumu_jets.root", "read");
     TFile* file2 = new TFile("histograms_sm_jets.root", "read");
@@ -71,4 +72,6 @@ void printHists_special()
     hs_jet.GetYaxis()->SetTitleOffset(2.);
 
     c->SaveAs("images_special/leading_jets_pt.png");
+
+    return 0;
 }

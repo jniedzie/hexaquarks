@@ -98,14 +98,26 @@ endif
 
 hexaquarks_pythia_program: $(PYTHIA) $$@.cc
 	cp ~/hexaquarks/pythia_files/* .
-ifeq ($(EVTGEN_USE)$(HEPMC3_USE),truetrue)
-	$(CXX) $@.cc -o $@ $(CXX_COMMON) $(HEPMC3_INCLUDE) $(HEPMC3_LIB) $(EVTGEN_INCLUDE)\
-	 -DHEPMC3 -DEVTGEN_PYTHIA -DEVTGEN_EXTERNAL $(EVTGEN_LIB)
+ifeq ($(HEPMC3_USE),true)
+	$(CXX) $@.cc -o $@ $(CXX_COMMON) $(HEPMC3_INCLUDE) $(HEPMC3_LIB)\
+	 -DHEPMC3
 else ifeq ($(HEPMC2_USE),true)
 	$(CXX) $@.cc -o $@ $(CXX_COMMON) $(HEPMC2_INCLUDE) $(HEPMC2_LIB)\
 	 -DHEPMC2
 else
-	$(error Error: $@ requires EVTGEN, HEPMC3)
+	$(error Error: $@ requires HEPMC2 or HEPMC3)
+endif
+
+hexaquarks_pythia_program_evtgen: $(PYTHIA) $$@.cc
+	cp ~/hexaquarks/pythia_files/* .
+ifeq ($(EVTGEN_USE)$(HEPMC3_USE),truetrue)
+        $(CXX) $@.cc -o $@ $(CXX_COMMON) $(HEPMC3_INCLUDE) $(HEPMC3_LIB) $(EVTGEN_INCLUDE)\
+         -DHEPMC3 -DEVTGEN_PYTHIA -DEVTGEN_EXTERNAL $(EVTGEN_LIB)
+else ifeq ($(EVTGEN_USE)$(HEPMC2_USE),truetrue)
+        $(CXX) $@.cc -o $@ $(CXX_COMMON) $(HEPMC2_INCLUDE) $(HEPMC2_LIB) $(EVTGEN_INCLUDE)\
+         -DHEPMC2 -DEVTGEN_PYTHIA -DEVTGEN_EXTERNAL $(EVTGEN_LIB)
+else
+        $(error Error: $@ requires EVTGEN, HEPMC3)
 endif
 
 # EVTGEN.
