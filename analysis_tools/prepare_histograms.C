@@ -15,8 +15,10 @@
 
 using namespace std;
 
-int max_events = -1;
+int max_events = 70000;
 int n_daughters = 100;
+const bool loop2 = false;
+const bool loop3 = false;
 
 TFile *input_file;
 
@@ -43,14 +45,16 @@ void fill_and_save_histograms(const vector<Event*> &events, string output_path)
       if(particle->is_electron()) continue;
       if(particle->is_gluon()) continue;
       if(particle->is_quark()) continue;
-      
+
       // if(particle->has_daughters()) continue;
 
       //if(i_event == 0) particle->print();
 
       // single particles
       histogramFiller.fill_hists(particle);
+
       // double particles
+      if(!loop2) continue;
       for(auto particle2 : event->particles){
         if(particle2->is_photon()) continue;
         if(particle2->is_neutrino()) continue;
@@ -60,6 +64,19 @@ void fill_and_save_histograms(const vector<Event*> &events, string output_path)
         if(particle == particle2) continue;
 
         histogramFiller.fill_hists(particle, particle2);
+
+        // triple particles
+        if(!loop3) continue;
+        for(auto particle3 : event->particles){
+          if(particle3->is_photon()) continue;
+          if(particle3->is_neutrino()) continue;
+          if(particle3->is_electron()) continue;
+          if(particle3->is_gluon()) continue;
+          if(particle3->is_quark()) continue;
+          if(particle == particle2 || particle == particle3 || particle2 == particle3) continue;
+
+          histogramFiller.fill_hists(particle, particle2, particle3);
+        }
       }
     }
 

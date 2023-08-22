@@ -1,5 +1,6 @@
 #include "Pythia8/Pythia.h"
 #include "Pythia8Plugins/HepMC2.h"
+#include "Pythia8Plugins/EvtGen.h"
 #include <cstdlib>
 
 using namespace Pythia8;
@@ -16,10 +17,13 @@ bool contains(T&& arr, U elem){
 
 
 bool are_args_ok(int argc){
-  if (argc == 3) return true;
+  if (argc == 6) return true;
   cerr << " Unexpected number of command-line arguments. \n You are expected to provide: "<<endl;
   cerr << "1. pythia config path" << endl;
   cerr << "2. output file name" << endl;
+  cerr << "3. EvtGen decay file (e.g. DECAY_2010.DEC)" << endl;
+  cerr << "4. EvtGen particle data (e.g. evt.pdl)" << endl;
+  cerr << "5. PYTHIA8DATA path" << endl;
   cerr << " Program stopped! " << endl;
   return false;
 }
@@ -60,6 +64,11 @@ int main(int argc, char* argv[]) {
   pythia.particleData.checkTable();
 
   pythia.init();
+
+  // Prepare EvtGen decayer
+  EvtGenDecays *evtgen = 0;
+  setenv("PYTHIA8DATA", argv[5], 1);
+  evtgen = new EvtGenDecays(&pythia, argv[3], argv[4]);
   
   Pythia8ToHepMC toHepMC(argv[2]);
 
@@ -86,8 +95,12 @@ int main(int argc, char* argv[]) {
       if (++iAbort < nAbort) continue;
       
       cout << " Event generation aborted prematurely, owing to error!\n";
-      break;
+      continue;
     }
+
+    // Perform the decays with EvtGen.
+    if(iEvent%100 == 0) cout<<"Decaying with EvtGen"<<endl;
+    /if (evtgen) evtgen->decay();
 
     bool is_hexaquark = false;
     for(int i = 1; i < pythia.event.size(); i++)
@@ -111,5 +124,6 @@ int main(int argc, char* argv[]) {
   cout<<"Events loop finished"<<endl;
   pythia.stat();
 
+  if (evtgen) delete evtgen;
   return 0;
 }

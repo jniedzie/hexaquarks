@@ -23,6 +23,7 @@ public:
   
   void fill(const Particle* particle);
   void fill(const Particle* particle_1, const Particle* particle_2);
+  void fill(const Particle* particle_1, const Particle* particle_2, const Particle* particle_3);
   
   std::map<std::string, TH1D*> hists;
 

@@ -20,6 +20,7 @@ void Event::print_all_particles()
 void Event::setup()
 {
   setup_particle_mothers();
+  leading_muon_index = get_leading_muon_index();
 }
 
 void Event::setup_particle_mothers()
@@ -52,3 +53,46 @@ vector<int> Event::get_sisters_indices(Particle *mother, int i_particle)
   return sister_indices;
 }
 
+int Event::get_leading_muon_index()
+{
+  int index = -1;
+  // find first muon
+  for(auto particle : particles)
+  {
+    if(abs(particle->pdgid) == 13)
+    {
+      index = particle->index;
+      break;
+    }
+  }
+
+  for(auto particle : particles)
+  {
+    if(abs(particle->pdgid) != 13) continue;
+    if(particle->four_vector.Pt() > particles[index]->four_vector.Pt()) index = particle->index;
+  }
+
+  return index;
+}
+
+int Event::get_leading_jet_index()
+{
+  int index = -1;
+  // find first muon
+  for(auto particle : particles)
+  {
+    if(abs(particle->pdgid) == 99)
+    {
+      index = particle->index;
+      break;
+    }
+  }
+
+  for(auto particle : particles)
+  {
+    if(abs(particle->pdgid) != 99) continue;
+    if(particle->four_vector.Pt() > particles[index]->four_vector.Pt()) index = particle->index;
+  }
+
+  return index;
+}
