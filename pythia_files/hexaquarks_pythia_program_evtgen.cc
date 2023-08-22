@@ -65,6 +65,9 @@ int main(int argc, char* argv[]) {
 
   pythia.init();
 
+  SlowJet slowjet(-1, 0.7);
+
+
   // Prepare EvtGen decayer
   EvtGenDecays *evtgen = 0;
   setenv("PYTHIA8DATA", argv[5], 1);
@@ -113,6 +116,13 @@ int main(int argc, char* argv[]) {
     }
     // save only events containing hexaquarks
     // if(is_hexaquark == false) continue;
+
+        // find jets
+    slowjet.analyze(pythia.event);
+    for(int i = 0; i < slowjet.sizeJet(); i++)
+    {
+      pythia.event.append(99, 1, 0, 0, slowjet.p(i), slowjet.m(i));
+    }
 
     if(iEvent%100 == 0) cout<<"Saving to HepMC"<<endl;
     try{ toHepMC.writeNextEvent(pythia); }
