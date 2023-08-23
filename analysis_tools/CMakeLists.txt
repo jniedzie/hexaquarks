@@ -13,10 +13,13 @@ SET(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
 set(CMAKE_BUILD_TYPE Debug)
 
 add_executable(prepare_histograms prepare_histograms.C)
+add_executable(event_counter event_counter.C)
 add_executable(printHists printHists.C)
 add_executable(printHists_other printHists_other.C)
 
 set_property(TARGET prepare_histograms PROPERTY CXX_STANDARD 17)
+set_property(TARGET event_counter PROPERTY CXX_STANDARD 17)
+
 
 include_directories("${PROJECT_SOURCE_DIR}/include")
 
@@ -30,5 +33,6 @@ add_library(Analysis  src/Event.cpp
 set_property(TARGET Analysis PROPERTY CXX_STANDARD 17)
 
 target_link_libraries(prepare_histograms Analysis ${ROOT_LIBRARIES})
+target_link_libraries(event_counter Analysis ${ROOT_LIBRARIES})
 target_link_libraries(printHists ${ROOT_LIBRARIES})
 target_link_libraries(printHists_other ${ROOT_LIBRARIES})

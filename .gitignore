@@ -11,6 +11,7 @@ analysis_tools/libAnalysis.a
 analysis_tools/prepare_histograms
 analysis_tools/printHists
 analysis_tools/printHists_other
+analysis_tools/event_counter
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
