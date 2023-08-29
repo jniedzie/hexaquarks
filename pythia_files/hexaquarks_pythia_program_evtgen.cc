@@ -65,7 +65,7 @@ int main(int argc, char* argv[]) {
 
   pythia.init();
 
-  SlowJet slowjet(-1, 0.7);
+  SlowJet slowjet(-1, 0.4);
 
 
   // Prepare EvtGen decayer

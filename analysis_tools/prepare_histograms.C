@@ -20,8 +20,6 @@ int n_daughters = 100;
 const bool loop2 = true;
 const bool loop3 = true;
 
-int mesons_ids[] = {443, 211, -211};
-
 TFile *input_file;
 
 TTree* get_input_tree(string input_path)
@@ -47,7 +45,7 @@ void fill_and_save_histograms(const vector<Event*> &events, string output_path)
       if(particle->is_electron()) continue;
       if(particle->is_gluon()) continue;
       if(particle->is_quark()) continue;
-      if(particle->pdgid != 321) continue;
+      // if(particle->pdgid != 321) continue;
 
       // if(particle->has_daughters()) continue;
 
@@ -64,7 +62,7 @@ void fill_and_save_histograms(const vector<Event*> &events, string output_path)
         if(particle2->is_electron()) continue;
         if(particle2->is_gluon()) continue;
         if(particle2->is_quark()) continue;
-        if(particle2->pdgid != 211) continue;
+        // if(particle2->pdgid != 211) continue;
         if(particle == particle2) continue;
 
 
@@ -78,7 +76,7 @@ void fill_and_save_histograms(const vector<Event*> &events, string output_path)
           if(particle3->is_electron()) continue;
           if(particle3->is_gluon()) continue;
           if(particle3->is_quark()) continue;
-          if(particle3->pdgid != -211) continue;
+          // if(particle3->pdgid != -211) continue;
           if(particle == particle2 || particle == particle3 || particle2 == particle3) continue;
 
           histogramFiller.fill_hists(particle, particle2, particle3);
