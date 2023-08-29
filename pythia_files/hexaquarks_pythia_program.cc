@@ -70,7 +70,8 @@ int main(int argc, char* argv[]) {
 
   cout<<"Will generate "<<nEvent<<" events"<<endl;
 
-  int hexaquarks_ids[] = {511, -511};
+  // ids of particles modified to imitate hexaquarks
+  int hexaquarks_ids[] = {521, -521};
 
   int iEvent = 0, hexa_count = 0;
   while(iEvent < nEvent) {
@@ -101,7 +102,7 @@ int main(int argc, char* argv[]) {
       }
     }
     // save only events containing hexaquarks
-    // if(is_hexaquark == false) continue;
+    if(is_hexaquark == false) continue;
 
     // find jets
     slowjet.analyze(pythia.event);

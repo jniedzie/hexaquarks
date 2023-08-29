@@ -11,8 +11,8 @@ using namespace std;
 
 int main() {
     gROOT->SetBatch();
-    TFile* file = new TFile("histograms_lclc_jpsi2mumu_jets.root", "read");
-    TFile* file2 = new TFile("histograms_sm_jets.root", "read");
+    TFile* file = new TFile("histograms/histograms_lclc_jpsi2mumu_jets.root", "read");
+    TFile* file2 = new TFile("histograms/histograms_sm_jets.root", "read");
 
     TCanvas* c = new TCanvas("", "", 1200, 1200);
 
@@ -30,13 +30,13 @@ int main() {
     mu_pt_hexa->SetLineColor(kRed);
     mu_pt_sm->SetLineColor(kBlue);
 
-    THStack hs("hs", "leading mu pt; p_{T} [GeV]; probability");
+    THStack hs("hs", "leading #\mu p_{T}; p_{T} [GeV]; probability");
     hs.Add(mu_pt_hexa);
     hs.Add(mu_pt_sm);
 
     TLegend leg(0.8, 0.8, 0.9, 0.9);
-    leg.AddEntry(mu_pt_sm, "mu_pt_sm");
-    leg.AddEntry(mu_pt_hexa, "mu_pt_hexa");
+    leg.AddEntry(mu_pt_sm, "background");
+    leg.AddEntry(mu_pt_hexa, "signal");
 
 
     c->Clear();
@@ -57,13 +57,13 @@ int main() {
     jet_pt_hexa->SetLineColor(kRed);
     jet_pt_sm->SetLineColor(kBlue);
 
-    THStack hs_jet("hs_jet", "leading jet pt; p_{T} [GeV]; probability");
+    THStack hs_jet("hs_jet", "leading jet p_{T}; p_{T} [GeV]; probability");
     hs_jet.Add(jet_pt_hexa);
     hs_jet.Add(jet_pt_sm);
 
     TLegend leg_jet(0.8, 0.8, 0.9, 0.9);
-    leg_jet.AddEntry(jet_pt_sm, "jet_pt_sm");
-    leg_jet.AddEntry(jet_pt_hexa, "jet_pt_hexa");
+    leg_jet.AddEntry(jet_pt_sm, "background");
+    leg_jet.AddEntry(jet_pt_hexa, "signal");
 
 
     c->Clear();
