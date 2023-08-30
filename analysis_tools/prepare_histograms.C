@@ -17,8 +17,8 @@ using namespace std;
 
 int max_events = 70000;
 int n_daughters = 100;
-const bool loop2 = false;
-const bool loop3 = false;
+const bool loop2 = true;
+const bool loop3 = true;
 
 TFile *input_file;
 
@@ -45,6 +45,7 @@ void fill_and_save_histograms(const vector<Event*> &events, string output_path)
       if(particle->is_electron()) continue;
       if(particle->is_gluon()) continue;
       if(particle->is_quark()) continue;
+      // if(particle->pdgid != 321) continue;
 
       // if(particle->has_daughters()) continue;
 
@@ -61,7 +62,9 @@ void fill_and_save_histograms(const vector<Event*> &events, string output_path)
         if(particle2->is_electron()) continue;
         if(particle2->is_gluon()) continue;
         if(particle2->is_quark()) continue;
+        // if(particle2->pdgid != 211) continue;
         if(particle == particle2) continue;
+
 
         histogramFiller.fill_hists(particle, particle2);
 
@@ -73,6 +76,7 @@ void fill_and_save_histograms(const vector<Event*> &events, string output_path)
           if(particle3->is_electron()) continue;
           if(particle3->is_gluon()) continue;
           if(particle3->is_quark()) continue;
+          // if(particle3->pdgid != -211) continue;
           if(particle == particle2 || particle == particle3 || particle2 == particle3) continue;
 
           histogramFiller.fill_hists(particle, particle2, particle3);
@@ -81,6 +85,7 @@ void fill_and_save_histograms(const vector<Event*> &events, string output_path)
     }
 
     i_event++;
+    if(i_event%100 == 0)cout << "filling histos; event: " << i_event << endl;
   }
 
   histogramFiller.save_histograms(output_path);
