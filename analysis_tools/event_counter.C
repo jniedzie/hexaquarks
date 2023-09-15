@@ -12,7 +12,7 @@
 
 using namespace std;
 
-int max_events = 10000;
+int max_events = 80000;
 int n_daughters = 100;
 
 
@@ -53,7 +53,7 @@ void jpsi_trigger(const vector<Event*> &events)
     if(mu_con && jpsi_con) n_passed++;
     i_event++;
   }
-  cout << "J/psi trigger" << endl;
+  cout << "HLT_Dimuon0_Jpsi3p5_Muon2_v" << endl;
   cout << n_passed << " out of " << i_event << " events passed" << endl;
 }
 
@@ -69,7 +69,7 @@ void jet_trigger(const vector<Event*> &events)
     if(jet_pt_con == true) n_passed++;
     i_event++;
   }
-  cout << "jet trigger" << endl;
+  cout << "HLT_AK8PFJet550_v" << endl;
   cout << n_passed << " out of " << i_event << " events passed" << endl;
 }
 
@@ -85,7 +85,7 @@ void jet_trigger2(const vector<Event*> &events)
     if(jet_pt_sum > 1050) n_passed++;
     i_event++;
   }
-  cout << "jet trigger2" << endl;
+  cout << "HLT_PFHT1050_v" << endl;
   cout << n_passed << " out of " << i_event << " events passed" << endl;
 }
 
@@ -101,7 +101,7 @@ void single_muon_trigger(const vector<Event*> &events)
     if(mu_pt_con == true) n_passed++;
     i_event++;
   }
-  cout << "single_muon" << endl;
+  cout << "HLT_IsoMu24_eta2p1_v" << endl;
   cout << n_passed << " out of " << i_event << " events passed" << endl;
 }
 
@@ -126,8 +126,31 @@ void double_muon_trigger(const vector<Event*> &events)
     if(mu_con == true) n_passed++;
     i_event++;
   }
-  cout << "double_muon" << endl;
+  cout << "HLT_Mu17_TrkIsoVVL_Mu8_TrkIsoVVL_DZ_Mass3p8_v" << endl;
   cout << n_passed << " out of " << i_event << " events passed" << endl;
+}
+
+void check(const vector<Event*> &events)
+{
+  int i_event = 0;
+  int n_passed = 0;
+  for(auto event : events){
+    i_event++;
+    for(auto particle : event->particles)
+    {
+      if(abs(particle->pdgid) == 511 && particle->status == 2)
+      {
+        n_passed++;
+          cout << particle->status << endl;
+        for(auto daughter : particle->daughters)
+        {
+          if (daughter > 0) cout << event->particles[daughter]->pdgid << endl;
+        }
+        cout << endl;
+      }
+    }
+  }
+  cout << n_passed << "  " << i_event << endl;
 }
 
 int main(int argc, char *argv[])
@@ -149,6 +172,7 @@ int main(int argc, char *argv[])
   jet_trigger2(events);
   single_muon_trigger(events);
   double_muon_trigger(events);
+  //check(events);
   
   input_file->Close();
   return 0;

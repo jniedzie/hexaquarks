@@ -66,19 +66,21 @@ if(particle1->is_pion() && particle2->is_pion() &&
 void HistogramFiller::fill_hists(const Particle* particle1, const Particle* particle2, const Particle* particle3)
 {
   if(!particle1 || !particle2 || !particle3) return;
-  if(particle1->pdgid == 443 && particle2->pdgid == 211 && particle3->pdgid == -211)
+  if(abs(particle1->pdgid) == 443 && particle2->pdgid == 211 && particle3->pdgid == -211)
   {
     histSets["pi+pi-jpsi"]->fill(particle1, particle2, particle3);
-    if(particle1->has_mother_with_id(511) && particle2->has_mother_with_id(511) && particle3->has_mother_with_id(511))
+    if((particle1->has_mother_with_id(511) && particle2->has_mother_with_id(511) && particle3->has_mother_with_id(511)) ||
+    (particle1->has_mother_with_id(-511) && particle2->has_mother_with_id(-511) && particle3->has_mother_with_id(-511)))
     {
       histSets["pi+pi-jpsi_from_lclc"]->fill(particle1, particle2, particle3);
     }
   }
 
-  if(particle1->pdgid == 321 && particle2->pdgid == 211 && particle3->pdgid == -211)
+  if(abs(particle1->pdgid) == 321 && particle2->pdgid == 211 && particle3->pdgid == -211)
   {
     histSets["pi+pi-k+"]->fill(particle1, particle2, particle3);
-    if(particle1->has_mother_with_id(521) && particle2->has_mother_with_id(521) && particle3->has_mother_with_id(521))
+    if((particle1->has_mother_with_id(521) && particle2->has_mother_with_id(521) && particle3->has_mother_with_id(521)) ||
+    (particle1->has_mother_with_id(-521) && particle2->has_mother_with_id(-521) && particle3->has_mother_with_id(-521)))
     {
       histSets["pi+pi-k+_from_pl"]->fill(particle1, particle2, particle3);
     }
