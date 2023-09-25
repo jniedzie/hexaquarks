@@ -95,7 +95,7 @@ int main(int argc, char* argv[]) {
     bool is_hexaquark = false;
     for(int i = 1; i < pythia.event.size(); i++)
     {
-      if(contains(hexaquarks_ids, abs(pythia.event[i].id()))){
+      if(contains(hexaquarks_ids, abs(pythia.event[i].id())) && pythia.event[i].statusHepMC() == 2){
         is_hexaquark = true;
         hexa_count++;
         break;
