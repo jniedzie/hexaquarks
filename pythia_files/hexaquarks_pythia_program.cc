@@ -71,7 +71,7 @@ int main(int argc, char* argv[]) {
   cout<<"Will generate "<<nEvent<<" events"<<endl;
 
   // ids of particles modified to imitate hexaquarks
-  // int hexaquarks_ids[] = {521, -521};
+  int hexaquarks_ids[] = {521, -521};
 
   int iEvent = 0, hexa_count = 0;
   while(iEvent < nEvent) {
@@ -95,7 +95,7 @@ int main(int argc, char* argv[]) {
     bool is_hexaquark = false;
     for(int i = 1; i < pythia.event.size(); i++)
     {
-      if(abs(pythia.event[i].id()) == 511 && pythia.event[i].statusHepMC() == 2){
+      if(contains(hexaquarks_ids, abs(pythia.event[i].id())) && pythia.event[i].statusHepMC() == 2){
         is_hexaquark = true;
         hexa_count++;
         break;

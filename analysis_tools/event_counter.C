@@ -130,28 +130,6 @@ void double_muon_trigger(const vector<Event*> &events)
   cout << n_passed << " out of " << i_event << " events passed" << endl;
 }
 
-void check(const vector<Event*> &events)
-{
-  int i_event = 0;
-  int n_passed = 0;
-  for(auto event : events){
-    i_event++;
-    for(auto particle : event->particles)
-    {
-      if(abs(particle->pdgid) == 511 && particle->status == 2)
-      {
-        n_passed++;
-          cout << particle->status << endl;
-        for(auto daughter : particle->daughters)
-        {
-          if (daughter > 0) cout << event->particles[daughter]->pdgid << endl;
-        }
-        cout << endl;
-      }
-    }
-  }
-  cout << n_passed << "  " << i_event << endl;
-}
 
 int main(int argc, char *argv[])
 {
@@ -172,7 +150,6 @@ int main(int argc, char *argv[])
   jet_trigger2(events);
   single_muon_trigger(events);
   double_muon_trigger(events);
-  //check(events);
   
   input_file->Close();
   return 0;
